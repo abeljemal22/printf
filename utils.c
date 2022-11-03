@@ -1,86 +1,96 @@
 #include "main.h"
+#include <unistd.h>
+#include <stdlib.h>
 
 /**
- * is_printable - Evaluates if a char is printable
- * @c: Char to be evaluated.
- *
- * Return: 1 if c is printable, 0 otherwise
- */
-int is_printable(char c)
+*_write - write to stdout
+*@c: char to be written
+*Return: 0 on SUCCESS
+*/
+int _write(char c)
 {
-	if (c >= 32 && c < 127)
-		return (1);
-
-	return (0);
+	return (write(1, &c, 1));
 }
 
 /**
- * append_hexa_code - Append ascci in hexadecimal code to buffer
- * @buffer: Array of chars.
- * @i: Index at which to start appending.
- * @ascii_code: ASSCI CODE.
- * Return: Always 3
+ * intlen - Determine the number of digit int integer
+ * @num: the given number
+ *
+ * Return: the length of the integer
  */
-int append_hexa_code(char ascii_code, char buffer[], int i)
+int intlen(int num)
 {
-	char map_to[] = "0123456789ABCDEF";
-	/* The hexa format code is always 2 digits long */
-	if (ascii_code < 0)
-		ascii_code *= -1;
+	int len = 0;
 
-	buffer[i++] = '\\';
-	buffer[i++] = 'x';
-
-	buffer[i++] = map_to[ascii_code / 16];
-	buffer[i] = map_to[ascii_code % 16];
-
-	return (3);
+	while (num != 0)
+	{
+		len++;
+		num /= 10;
+	}
+	return (len);
 }
 
 /**
- * is_digit - Verifies if a char is a digit
- * @c: Char to be evaluated
+ * stringlen - determines the length of string
+ * @str: the given string
  *
- * Return: 1 if c is a digit, 0 otherwise
+ * Return: an integer length
  */
-int is_digit(char c)
+int stringlen(char *str)
 {
-	if (c >= '0' && c <= '9')
-		return (1);
+	int i = 0;
 
-	return (0);
+	while (str[i++])
+		;
+	return (i - 1);
 }
-
 /**
- * convert_size_number - Casts a number to the specified size
- * @num: Number to be casted.
- * @size: Number indicating the type to be casted.
+ * array_rev - reverse array
+ * @arr: the given array
+ * @len: the array length
  *
- * Return: Casted value of num
+ * Return: void
  */
-long int convert_size_number(long int num, int size)
+void array_rev(char *arr, int len)
 {
-	if (size == S_LONG)
-		return (num);
-	else if (size == S_SHORT)
-		return ((short)num);
+	int i;
+	char tmp;
 
-	return ((int)num);
+	for (i = 0; i < (len / 2); i++)
+	{
+		tmp = arr[i];
+		arr[i] = arr[(len - 1) - i];
+		arr[(len - 1) - i] = tmp;
+	}
 }
-
 /**
- * convert_size_unsgnd - Casts a number to the specified size
- * @num: Number to be casted
- * @size: Number indicating the type to be casted
+ * rot13 - convert to rot13
+ * @str: given string
  *
- * Return: Casted value of num
+ * Return: a pointer to sipher str
  */
-long int convert_size_unsgnd(unsigned long int num, int size)
+char *rot13(char *str)
 {
-	if (size == S_LONG)
-		return (num);
-	else if (size == S_SHORT)
-		return ((unsigned short)num);
+	int i;
+	int j;
+	int l = stringlen(str);
+	char *s;
+	char *alph = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	char *shift = "nopqrstuvwxyzabcdefghijklmNOPQRSTUVWXYZABCDEFGHIJKLM";
 
-	return ((unsigned int)num);
+	s = malloc(l + 1);
+	for (i = 0; str[i] != '\0'; i++)
+	{
+		for (j = 0; j < 52; j++)
+		{
+			if (str[i] == alph[j])
+			{
+				s[i] = shift[j];
+				break;
+			}
+		}
+		if (j == 52)
+			s[i] = str[i];
+	}
+	return (s);
 }
