@@ -1,50 +1,37 @@
 #include "main.h"
 
-/**
- * _printf - prints formatted data to stdout
- * @format: string that contains the format to print
- * Return: number of characters written
- */
-int _printf(char *format, ...)
-{
-	int written = 0, (*structype)(char *, va_list);
-	char q[3];
-	va_list pa;
+#include <stdlib.h>
+#include <stdarg.h>
 
-	if (format == NULL)
+#define MAX_BUF 1024
+/**
+ * _printf - prints the input on the shell buffer
+ * @format: requested format
+ *
+ * Return: a length of the string outputed
+ */
+int _printf(const char *format, ...)
+{
+	int value, i;
+	va_list args;
+	char *result;
+
+	if (!format || args == NULL)
 		return (-1);
-	q[2] = '\0';
-	va_start(pa, format);
-	_putchar(-1);
-	while (format[0])
+	if (format[0] == '%' && !format[1])
+		return (-1);
+	result = malloc(MAX_BUF);
+	if (!result)
+		return (-1);
+	for (i = 0; i < MAX_BUF; i++)
+		result[i] = '\0';
+	va_start(args, format);
+	value = get_formater(result, format, args);
+	while (*result)
 	{
-		if (format[0] == '%')
-		{
-			structype = driver(format);
-			if (structype)
-			{
-				q[0] = '%';
-				q[1] = format[1];
-				written += structype(q, pa);
-			}
-			else if (format[1] != '\0')
-			{
-				written += _putchar('%');
-				written += _putchar(format[1]);
-			}
-			else
-			{
-				written += _putchar('%');
-				break;
-			}
-			format += 2;
-		}
-		else
-		{
-			written += _putchar(format[0]);
-			format++;
-		}
+		_write(*result);
+		result++;
 	}
-	_putchar(-2);
-	return (written);
+	va_end(args);
+	return (value);
 }
