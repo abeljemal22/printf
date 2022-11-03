@@ -1,38 +1,60 @@
 #ifndef MAIN_H
 #define MAIN_H
+
+/* Include files */
 #include <stdarg.h>
+#include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
-#include <stddef.h>
-#include <stdlib.h>
+#include <limits.h>
 
 /**
- * struct structprint - structure containing
- * @q: the location and method to translate data to characters.
- * @u: print function for specific type.
+ * struct specifier - a specifier struct
+ * @sp: the character specifier
+ * @f: the function required
  *
- * Return: int
+ * Description: a structure used to compare the input format flag
  */
-typedef struct structprint
+typedef struct specifier
 {
-	char *q;
-	int (*u)(char *format, va_list);
-} structype;
+	char *sp;
+	int (*f)(char **, va_list);
+} spec_t;
 
-int _putchar(char ch);
-int _puts(char *string);
-int printc(char *format, va_list);
-int printstr(char *format, va_list);
-int (*driver(char *format))(char *format, va_list);
-int _printf(char *format, ...);
-int printint(char *format, va_list pa);
-int integer(int number);
-int contadordigit(int number);
-int _abs(int number);
-int printpercent(char *format, va_list pa);
-int printhex(char *format, va_list);
-int printHEX(char *format, va_list);
-int printocta(char *format, va_list);
-int print_unsign(char *format, va_list);
+/* the printf function */
+int _printf(const char *, ...);
+
+/* the write function */
+int _write(char);
+
+/* function wrapper */
+int get_formater(char *, const char *, va_list);
+
+/* Specifier function */
+int percent_format(char **, va_list);
+int char_format(char **, va_list);
+int string_format(char **, va_list);
+int number_format(char **, va_list);
+int binary_format(char **, va_list);
+int oct_format(char **, va_list);
+int unsigned_format(char **, va_list);
+int reverse_format(char **, va_list);
+int hex_format(char **, va_list);
+int rot13_format(char **, va_list);
+int S_format(char **, va_list);
+
+/* Flags handler */
+int plus_handler(char **, va_list);
+/* Converter */
+char *itoa(unsigned int);
+char *btoa(unsigned int);
+char *otoa(unsigned int);
+char *htoa(unsigned int);
+char *rot13(char *s);
+
+/* Utilities and tool */
+int intlen(int);
+void array_rev(char *, int);
+int stringlen(char *);
 
 #endif /* MAIN_H */
