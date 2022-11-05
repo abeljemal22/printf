@@ -1,60 +1,64 @@
 #ifndef MAIN_H
 #define MAIN_H
 
-/* Include files */
 #include <stdarg.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
 #include <limits.h>
 
+
 /**
- * struct specifier - a specifier struct
- * @sp: the character specifier
- * @f: the function required
+ * struct print - struct for printer functions
+ * @type_arg: identifier
+ * @f: pointer to a printer functions
  *
- * Description: a structure used to compare the input format flag
+ * Description: struct that stores pointers to a
+ * printer functions.
  */
-typedef struct specifier
+typedef struct print
 {
-	char *sp;
-	int (*f)(char **, va_list);
-} spec_t;
+	char *type_arg;
+	int (*f)(va_list, char *, unsigned int);
+} print_t;
 
-/* the printf function */
-int _printf(const char *, ...);
+int _printf(const char *format, ...);
+int print_prg(va_list __attribute__((unused)), char *, unsigned int);
+int print_chr(va_list arguments, char *buf, unsigned int ibuf);
+int print_str(va_list arguments, char *buf, unsigned int ibuf);
+int print_int(va_list arguments, char *buf, unsigned int ibuf);
+int print_bnr(va_list arguments, char *buf, unsigned int ibuf);
+int print_unt(va_list arguments, char *buf, unsigned int ibuf);
+int print_oct(va_list arguments, char *buf, unsigned int ibuf);
+int print_hex(va_list arguments, char *buf, unsigned int ibuf);
+int print_upx(va_list arguments, char *buf, unsigned int ibuf);
+int print_usr(va_list arguments, char *buf, unsigned int ibuf);
+int print_add(va_list arguments, char *buf, unsigned int ibuf);
+int print_rev(va_list arguments, char *buf, unsigned int ibuf);
+int print_rot(va_list arguments, char *buf, unsigned int ibuf);
+int prinlint(va_list arguments, char *buf, unsigned int ibuf);
+int prinlunt(va_list arguments, char *buf, unsigned int ibuf);
+int prinloct(va_list arguments, char *buf, unsigned int ibuf);
+int prinlhex(va_list arguments, char *buf, unsigned int ibuf);
+int prinlupx(va_list arguments, char *buf, unsigned int ibuf);
+int prinhint(va_list arguments, char *buf, unsigned int ibuf);
+int prinhunt(va_list arguments, char *buf, unsigned int ibuf);
+int prinhoct(va_list arguments, char *buf, unsigned int ibuf);
+int prinhhex(va_list arguments, char *buf, unsigned int ibuf);
+int prinhupx(va_list arguments, char *buf, unsigned int ibuf);
+int prinpint(va_list arguments, char *buf, unsigned int ibuf);
+int prinnoct(va_list arguments, char *buf, unsigned int ibuf);
+int prinnhex(va_list arguments, char *buf, unsigned int ibuf);
+int prinnupx(va_list arguments, char *buf, unsigned int ibuf);
+int prinsint(va_list arguments, char *buf, unsigned int ibuf);
+int (*get_print_func(const char *s, int index))(va_list, char *, unsigned int);
+int ev_print_func(const char *s, int index);
+unsigned int handl_buf(char *buf, char c, unsigned int ibuf);
+int print_buf(char *buf, unsigned int nbuf);
+char *fill_binary_array(char *binary, long int int_in, int isneg, int limit);
+char *fill_oct_array(char *bnr, char *oct);
+char *fill_long_oct_array(char *bnr, char *oct);
+char *fill_short_oct_array(char *bnr, char *oct);
+char *fill_hex_array(char *bnr, char *hex, int isupp, int limit);
 
-/* the write function */
-int _write(char);
-
-/* function wrapper */
-int get_formater(char *, const char *, va_list);
-
-/* Specifier function */
-int percent_format(char **, va_list);
-int char_format(char **, va_list);
-int string_format(char **, va_list);
-int number_format(char **, va_list);
-int binary_format(char **, va_list);
-int oct_format(char **, va_list);
-int unsigned_format(char **, va_list);
-int reverse_format(char **, va_list);
-int hex_format(char **, va_list);
-int rot13_format(char **, va_list);
-int S_format(char **, va_list);
-
-/* Flags handler */
-int plus_handler(char **, va_list);
-/* Converter */
-char *itoa(unsigned int);
-char *btoa(unsigned int);
-char *otoa(unsigned int);
-char *htoa(unsigned int);
-char *rot13(char *s);
-
-/* Utilities and tool */
-int intlen(int);
-void array_rev(char *, int);
-int stringlen(char *);
-
-#endif /* MAIN_H */
+#endif
