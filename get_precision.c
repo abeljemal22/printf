@@ -1,36 +1,37 @@
 #include "main.h"
 
 /**
- * driver - selector for type of fun.
- * @format: string.
- * Description: the function loops through the structs
- * selector[] ment of the struct.
- * Return: a pointer
- * structype selector - Struct
+ * fill_binary_array - prints decimal in binary
+ * @binary: pointer to binary
+ * @int_in: input number
+ * @isneg: if input number is negative
+ * @limit: size of the binary
+ * Return: number of chars printed.
  */
-
-int (*driver(char *format))(char *format, va_list)
+char *fill_binary_array(char *binary, long int int_in, int isneg, int limit)
 {
-int i;
+	int i;
 
-structype selector[] = {
-{"%c", printc},
-{"%s", printstr},
-{"%d", printint},
-{"%i", printint},
-{"%%", printpercent},
-{"%x", printhex},
-{"%X", printHEX},
-{"%o", printocta},
-{NULL, NULL}
-};
-
-if (format[1] == ' ' || format[1] == '\0')
-return (NULL);
-for (i = 0; selector[i].q; i++)
-{
-if (format[1] == selector[i].q[1])
-return (selector[i].u);
-}
-return (NULL);
+	for (i = 0; i < limit; i++)
+		binary[i] = '0';
+	binary[limit] = '\0';
+	for (i = limit - 1; int_in > 1; i--)
+	{
+		if (int_in == 2)
+			binary[i] = '0';
+		else
+			binary[i] = (int_in % 2) + '0';
+		int_in /= 2;
+	}
+	if (int_in != 0)
+		binary[i] = '1';
+	if (isneg)
+	{
+		for (i = 0; binary[i]; i++)
+			if (binary[i] == '0')
+				binary[i] = '1';
+			else
+				binary[i] = '0';
+	}
+	return (binary);
 }
